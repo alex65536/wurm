@@ -7,7 +7,7 @@
 ## Motivation
 
 By default, errors in Rust are handled using `Result<T, E>`, which contains either a value
-or an error. Bu sometimes, you need to return a value alongside with one or many errors. In this
+or an error. But sometimes, you need to return a value alongside with one or many errors. In this
 case, you may need to use `wurm`.
 
 Think of non-fatal errors as compiler warnings. The compiler will give you the result (i.e. the
