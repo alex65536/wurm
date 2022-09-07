@@ -35,7 +35,7 @@
 //! ```
 //! use thiserror::Error;
 //! use wurm::prelude::*;
-//! use wurm::All;
+//! use wurm::CollectAll;
 //!
 //! // First error type
 //! #[derive(Debug, Error, PartialEq, Eq)]
@@ -76,7 +76,7 @@
 //! // Create a sink for non-fatal errors.
 //! //
 //! // Explicit type hint is added for extra clarity and is not needed actually.
-//! let mut warn: All<BarError> = All::default();
+//! let mut warn: CollectAll<BarError> = CollectAll::default();
 //!
 //! // Call `bar()` with the created sink. It must yield four errors: two from each
 //! // `foo()` subcall.
@@ -91,7 +91,8 @@ pub mod sink;
 
 pub use base::{Adapt, AdaptMap, Warn, WarnExt};
 pub use ext::{OptionExt, ResultExt};
-pub use sink::{All, Ignore, Stderr};
+#[allow(deprecated)]
+pub use sink::{All, CollectAll, Ignore, Stderr};
 
 /// The most important types to use
 ///
@@ -132,7 +133,7 @@ mod tests {
 
     #[test]
     fn test_recursive() {
-        let mut warn = All::default();
+        let mut warn = CollectAll::default();
         recursive(3, &mut warn);
         let res = vec![
             ErrFirst { value: 1 },
@@ -157,7 +158,7 @@ mod tests {
 
     #[test]
     fn test_adapt() {
-        let mut warn = All::default();
+        let mut warn = CollectAll::default();
         outer(&mut warn);
         let res = vec![
             ErrSecond(ErrFirst { value: 1 }),
@@ -168,7 +169,7 @@ mod tests {
 
     #[test]
     fn test_exts() {
-        let mut warn = All::default();
+        let mut warn = CollectAll::default();
         let value = Some(42);
         assert_eq!(
             value.or_warn_with(ErrSecond(ErrFirst { value: 1 }), &mut warn),

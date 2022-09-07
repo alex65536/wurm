@@ -36,7 +36,7 @@ pub trait WarnExt<E: Error>: Warn<E> + sealed::WarnExt<E> {
     /// ```
     /// use thiserror::Error;
     /// use wurm::prelude::*;
-    /// use wurm::All;
+    /// use wurm::CollectAll;
     ///
     /// // First error type
     /// #[derive(Debug, Error, PartialEq, Eq)]
@@ -59,7 +59,7 @@ pub trait WarnExt<E: Error>: Warn<E> + sealed::WarnExt<E> {
     ///     foo(&mut warn.adapt());
     /// }
     ///
-    /// let mut warn = All::default();
+    /// let mut warn = CollectAll::default();
     /// bar(&mut warn);
     /// // We get exactly one error of type `BarError` after calling `bar()`.
     /// // Note that the error is originally coming from `foo()` and is wrapped.

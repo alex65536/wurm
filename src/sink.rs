@@ -28,16 +28,16 @@ impl<E: Error> Warn<E> for Stderr {
 
 /// Collects all the incoming errors into a [`Vec`]
 #[derive(Debug, Clone)]
-pub struct All<E: Error>(pub Vec<E>);
+pub struct CollectAll<E: Error>(pub Vec<E>);
 
-impl<E: Error> Default for All<E> {
+impl<E: Error> Default for CollectAll<E> {
     #[inline]
     fn default() -> Self {
         Self(Vec::new())
     }
 }
 
-impl<E: Error> Warn<E> for All<E> {
+impl<E: Error> Warn<E> for CollectAll<E> {
     #[inline]
     fn warn(&mut self, error: E) {
         self.0.push(error);
@@ -46,16 +46,16 @@ impl<E: Error> Warn<E> for All<E> {
 
 /// Keeps the first error which arrived into this sink
 #[derive(Debug, Clone)]
-pub struct First<E: Error>(pub Option<E>);
+pub struct KeepFirst<E: Error>(pub Option<E>);
 
-impl<E: Error> Default for First<E> {
+impl<E: Error> Default for KeepFirst<E> {
     #[inline]
     fn default() -> Self {
         Self(None)
     }
 }
 
-impl<E: Error> Warn<E> for First<E> {
+impl<E: Error> Warn<E> for KeepFirst<E> {
     #[inline]
     fn warn(&mut self, error: E) {
         if self.0.is_none() {
@@ -66,16 +66,16 @@ impl<E: Error> Warn<E> for First<E> {
 
 /// Keeps the last error which arrived into this sink
 #[derive(Debug, Clone)]
-pub struct Last<E: Error>(pub Option<E>);
+pub struct KeepLast<E: Error>(pub Option<E>);
 
-impl<E: Error> Default for Last<E> {
+impl<E: Error> Default for KeepLast<E> {
     #[inline]
     fn default() -> Self {
         Self(None)
     }
 }
 
-impl<E: Error> Warn<E> for Last<E> {
+impl<E: Error> Warn<E> for KeepLast<E> {
     #[inline]
     fn warn(&mut self, error: E) {
         self.0 = Some(error);
@@ -98,3 +98,15 @@ impl<E: Error, F: FnMut(E)> Warn<E> for FromFn<E, F> {
         self.0(error)
     }
 }
+
+/// Deprecated alias to [`CollectAll`]
+#[deprecated(since = "1.1.0", note = "deprecated to make the name less confusing, use CollectAll instead")]
+pub type All<E> = CollectAll<E>;
+
+/// Deprecated alias to [`KeepFirst`]
+#[deprecated(since = "1.1.0", note = "deprecated to make the name less confusing, use KeepFirst instead")]
+pub type First<E> = KeepFirst<E>;
+
+/// Deprecated alias to [`KeepLast`]
+#[deprecated(since = "1.1.0", note = "deprecated to make the name less confusing, use KeepLast instead")]
+pub type Last<E> = KeepLast<E>;

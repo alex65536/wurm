@@ -1,6 +1,6 @@
 [package]
 name = "wurm"
-version = "1.0.1"
+version = "1.1.0"
 edition = "2021"
 description = "Non-fatal, strongly typed errors"
 authors = ["Alexander Kernozhitsky <kernalex256@yandex.by>"]
