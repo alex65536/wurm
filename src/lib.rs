@@ -78,7 +78,8 @@
 //! // Explicit type hint is added for extra clarity and is not needed actually.
 //! let mut warn: All<BarError> = All::default();
 //!
-//! // Call `bar()` with the created sink. It must yield four errors: two from each `foo()` subcall.
+//! // Call `bar()` with the created sink. It must yield four errors: two from each
+//! // `foo()` subcall.
 //! let value = bar(2, 3, &mut warn);
 //! assert_eq!(value, 12);
 //! assert_eq!(warn.0.len(), 4);
