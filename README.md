@@ -2,6 +2,7 @@
 
 [![Crates.io: wurm](https://img.shields.io/crates/v/wurm.svg)](https://crates.io/crates/wurm)
 [![Documentation](https://img.shields.io/docsrs/wurm/latest)](https://docs.rs/wurm)
+[![Build](https://github.com/alex65536/wurm/actions/workflows/build.yml/badge.svg)](https://github.com/alex65536/wurm/actions/workflows/build.yml)
 
 ## Motivation
 
