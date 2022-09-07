@@ -2,8 +2,14 @@
 name = "wurm"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+description = "Non-fatal, strongly typed errors"
+authors = ["Alexander Kernozhitsky <kernalex256@yandex.by>"]
+readme = "README.md"
+homepage = "https://github.com/alex65536/wurm"
+repository = "https://github.com/alex65536/wurm"
+license = "MIT"
+keywords = ["warning", "error"]
+categories = ["rust-patterns"]
 
 [dev-dependencies]
 thiserror = "1.0.32"
