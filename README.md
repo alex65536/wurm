@@ -19,6 +19,11 @@ problematic.
 
 For motivating example and API documentation, go to [the docs](https://docs.rs/wurm).
 
+## Why such name?
+
+It's just modified word "warn" (as non-fatal errors can be also called warnings). So, "warn" → "würm" sound
+pretty similar.
+
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for more details.
