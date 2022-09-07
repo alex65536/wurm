@@ -38,8 +38,8 @@ mod tests {
 
     #[test]
     fn test_recursive() {
-        let mut sink = All::default();
-        recursive(3, &mut sink);
+        let mut warn = All::default();
+        recursive(3, &mut warn);
         let res = vec![
             ErrFirst { value: 1 },
             ErrFirst { value: 2 },
@@ -49,7 +49,7 @@ mod tests {
             ErrFirst { value: 2 },
             ErrFirst { value: 1 },
         ];
-        assert_eq!(sink.0, res);
+        assert_eq!(warn.0, res);
     }
 
     fn inner(warn: &mut impl Warn<ErrFirst>) {
@@ -63,12 +63,32 @@ mod tests {
 
     #[test]
     fn test_adapt() {
-        let mut sink = All::default();
-        outer(&mut sink);
+        let mut warn = All::default();
+        outer(&mut warn);
         let res = vec![
             ErrSecond(ErrFirst { value: 1 }),
             ErrSecond(ErrFirst { value: 2 }),
         ];
-        assert_eq!(sink.0, res);
+        assert_eq!(warn.0, res);
+    }
+
+    #[test]
+    fn test_exts() {
+        let mut warn = All::default();
+        let value = Some(42);
+        assert_eq!(value.or_warn_with(ErrSecond(ErrFirst {value: 1}), &mut warn), Some(42));
+        assert_eq!(warn.0.len(), 0);
+
+        let value: Option<isize> = None;
+        assert_eq!(value.or_warn_with(ErrSecond(ErrFirst {value: 1}), &mut warn), None);
+        assert_eq!(warn.0.len(), 1);
+
+        let value: Result<_, ErrSecond> = Ok(42);
+        assert_eq!(value.or_warn(&mut warn), Some(42));
+        assert_eq!(warn.0.len(), 1);
+
+        let value: Result<usize, _> = Err(ErrFirst {value: 2});
+        assert_eq!(value.or_warn(&mut warn), None);
+        assert_eq!(warn.0.len(), 2);
     }
 }
