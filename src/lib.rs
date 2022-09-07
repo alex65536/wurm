@@ -3,12 +3,12 @@ mod ext;
 
 pub mod sink;
 
-pub use base::{Warn, WarnExt, Adapt, AdaptMap};
+pub use base::{Adapt, AdaptMap, Warn, WarnExt};
 pub use ext::{OptionExt, ResultExt};
-pub use sink::{Ignore, Stderr, All};
+pub use sink::{All, Ignore, Stderr};
 
 pub mod prelude {
-    pub use crate::{Warn, WarnExt, OptionExt, ResultExt};
+    pub use crate::{OptionExt, ResultExt, Warn, WarnExt};
 }
 
 #[cfg(test)]
@@ -76,18 +76,24 @@ mod tests {
     fn test_exts() {
         let mut warn = All::default();
         let value = Some(42);
-        assert_eq!(value.or_warn_with(ErrSecond(ErrFirst {value: 1}), &mut warn), Some(42));
+        assert_eq!(
+            value.or_warn_with(ErrSecond(ErrFirst { value: 1 }), &mut warn),
+            Some(42)
+        );
         assert_eq!(warn.0.len(), 0);
 
         let value: Option<isize> = None;
-        assert_eq!(value.or_warn_with(ErrSecond(ErrFirst {value: 1}), &mut warn), None);
+        assert_eq!(
+            value.or_warn_with(ErrSecond(ErrFirst { value: 1 }), &mut warn),
+            None
+        );
         assert_eq!(warn.0.len(), 1);
 
         let value: Result<_, ErrSecond> = Ok(42);
         assert_eq!(value.or_warn(&mut warn), Some(42));
         assert_eq!(warn.0.len(), 1);
 
-        let value: Result<usize, _> = Err(ErrFirst {value: 2});
+        let value: Result<usize, _> = Err(ErrFirst { value: 2 });
         assert_eq!(value.or_warn(&mut warn), None);
         assert_eq!(warn.0.len(), 2);
     }

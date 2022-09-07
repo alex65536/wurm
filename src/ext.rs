@@ -16,7 +16,8 @@ pub trait OptionExt: sealed::Option {
 
 pub trait ResultExt<T, E: Error>: sealed::Result<T, E> {
     fn or_warn<D: From<E> + Error>(self, warn: &mut impl Warn<D>) -> Option<T>;
-    fn or_warn_map<D: Error>(self, func: impl FnOnce(E) -> D, warn: &mut impl Warn<D>) -> Option<T>;
+    fn or_warn_map<D: Error>(self, func: impl FnOnce(E) -> D, warn: &mut impl Warn<D>)
+        -> Option<T>;
 }
 
 impl<T> OptionExt for Option<T> {
@@ -36,7 +37,11 @@ impl<T, E: Error> ResultExt<T, E> for Result<T, E> {
     }
 
     #[inline]
-    fn or_warn_map<D: Error>(self, func: impl FnOnce(E) -> D, warn: &mut impl Warn<D>) -> Option<T> {
+    fn or_warn_map<D: Error>(
+        self,
+        func: impl FnOnce(E) -> D,
+        warn: &mut impl Warn<D>,
+    ) -> Option<T> {
         match self {
             Ok(val) => Some(val),
             Err(err) => {
