@@ -5,7 +5,7 @@
 
 ## Motivation
 
-By default, errors in Rust are handled using [`Result<T, E>`], which contains either a value
+By default, errors in Rust are handled using `Result<T, E>`, which contains either a value
 or an error. Bu sometimes, you need to return a value alongside with one or many errors. In this
 case, you may need to use `wurm`.
 
