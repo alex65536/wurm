@@ -1,15 +1,5 @@
-mod base;
-mod ext;
-
-pub mod sink;
-
-pub use base::{Warn, WarnExt, Adapt, AdaptMap};
-pub use ext::{OptionExt, ResultExt};
-pub use sink::{Ignore, Stderr, All};
-
-pub mod prelude {
-    pub use crate::{Warn, WarnExt, OptionExt, ResultExt};
-}
+use std::error::Error;
+use std::marker::PhantomData;
 
 #[cfg(test)]
 mod tests {
@@ -27,7 +17,7 @@ mod tests {
     #[error("second: {0}")]
     struct ErrSecond(#[from] ErrFirst);
 
-    fn recursive(n: usize, warn: &mut impl Warn<ErrFirst>) {
+    fn recursive(n: usize, warn: &mut impl Sink<ErrFirst>) {
         if n == 0 {
             return;
         }
@@ -52,11 +42,11 @@ mod tests {
         assert_eq!(sink.0, res);
     }
 
-    fn inner(warn: &mut impl Warn<ErrFirst>) {
+    fn inner(warn: &mut impl Sink<ErrFirst>) {
         warn.warn(ErrFirst { value: 1 });
     }
 
-    fn outer(warn: &mut impl Warn<ErrSecond>) {
+    fn outer(warn: &mut impl Sink<ErrSecond>) {
         inner(&mut warn.adapt());
         warn.warn(ErrSecond(ErrFirst { value: 2 }));
     }
